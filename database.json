@@ -1,0 +1,7 @@
+{
+    "host": "tailorshop-database.cnqjlilwrc41.us-east-1.rds.amazonaws.com",
+    "user": "admin",
+    "password": "a123456789",
+    "port": "3306",
+    "database": "tailorshop"
+}
