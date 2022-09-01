@@ -38,7 +38,7 @@ app.post("/signup",async (req, res)=>{
                     (err,result,fields )=>{
                     console.log(result)
                     console.log(err)
-                    res.send("등록 되었습니다.")
+                    res.send("회원이 등록 되었습니다.")
                 })
             })
         })
@@ -71,6 +71,31 @@ app.post('/login', async (req, res)=>{
             }
         }
     )
+})
+
+//프로모션 페이지
+
+app.get('/promotion', async (req, res)=>{
+    connection.query(
+        "select * from promotion",
+        (err, rows, fields)=>{
+            res.send(rows);
+            console.log(err);
+        }
+    )
+})
+
+app.get('/promotionReg', async(req, res)=>{
+    const {title, body, imgsrc1, period } = req.body;
+    connection.query(
+        "insert into promotion(`title`, `body`, `imgsrc1`,`period`) values(?,?,?,?)",
+        [title, body, imgsrc1, period],
+        (err,result,fields)=>{
+            console.log(result);
+            console.log(err);
+            res.send("글이 등록되었습니다.")
+
+    })
 })
 
 //세팅한 app을 실행시킨다.
