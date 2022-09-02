@@ -85,18 +85,22 @@ app.get('/promotion', async (req, res)=>{
     )
 })
 
-app.get('/promotionReg', async(req, res)=>{
-    const {title, body, imgsrc1, period } = req.body;
+
+// 프로모션페이지 업로드
+app.post('/promotion/reg', async(req,res)=>{
+    const {title, body, imgsrc1, period} = req.body;
     connection.query(
-        "insert into promotion(`title`, `body`, `imgsrc1`,`period`) values(?,?,?,?)",
+        "insert into promotion(`title`, `body`, `imgsrc`, `period`) values(?,?,?,?)",
         [title, body, imgsrc1, period],
-        (err,result,fields)=>{
+        (err,result, fields)=>{
             console.log(result);
             console.log(err);
-            res.send("글이 등록되었습니다.")
-
-    })
+            res.send("글이 등록되었습니다.");
+        }
+    )
 })
+
+
 
 //세팅한 app을 실행시킨다.
 app.listen(port, () => {
