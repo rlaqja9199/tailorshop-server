@@ -87,15 +87,30 @@ app.get('/promotion', async (req, res)=>{
 
 
 // 프로모션페이지 업로드
-app.post('/promotion/reg', async(req,res)=>{
+app.post('/postreg', async(req,res)=>{
     const {title, body, imgsrc1, period} = req.body;
     connection.query(
-        "insert into promotion(`title`, `body`, `imgsrc`, `period`) values(?,?,?,?)",
+        "insert into promotion(`title`, `body`, `imgsrc1`, `period`) values(?,?,?,?)",
         [title, body, imgsrc1, period],
         (err,result, fields)=>{
             console.log(result);
             console.log(err);
             res.send("글이 등록되었습니다.");
+        }
+    )
+})
+
+//프로모션페이지 삭제
+app.post('/postdel', async(req,res)=>{
+    const {postId} = req.body;
+    connection.query(
+        `delete from promotion where title = ${postId}`,
+        (err,result, fields)=>{
+            console.log(`게시글 ${postId}번이 삭제되었습니다.`)
+            console.log(result);
+            console.log(err);
+            console.log(id)
+            res.send("게시글이 삭제되었습니다.")
         }
     )
 })
