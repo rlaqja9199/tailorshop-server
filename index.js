@@ -47,11 +47,12 @@ app.post("/signup",async (req, res)=>{
 
 // 로그인 하기
 app.post('/login', async (req, res)=>{
-    const {useremail,userpass}  = req.body; 
+    const {username,userpass}  = req.body; 
     console.log(req.body);
     connection.query(
-        `select * from customer_members where usermail = '${useremail}'`,
+        `select * from user where username = '${username}'`,
         (err, rows, fields)=>{
+            console.log(rows)
             if(rows != undefined){
                 if(rows[0] == undefined){
                     res.send(null)
@@ -114,6 +115,37 @@ app.post('/postdel', async(req,res)=>{
         }
     )
 })
+
+
+
+
+
+
+// 리뷰페이지
+app.get('/review', async (req, res)=>{
+    connection.query(
+        "select * from review order by id desc limit 11",
+        (err, rows, fields)=>{
+            res.send(rows);
+            console.log(err);
+        }
+    )
+})
+app.post('/reviewreg', async(req,res)=>{
+    const {imgsrc, title, body} = req.body;
+    connection.query(
+        "insert into review(`imgsrc`, `title`, `body`) values(?,?,?)",
+        [imgsrc, title, body],
+        (err,result, fields)=>{
+            console.log(result);
+            console.log(err);
+            res.send("글이 등록되었습니다.");
+        }
+    )
+})
+
+
+
 
 
 
