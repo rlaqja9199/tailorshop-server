@@ -6,6 +6,7 @@ const fs = require('fs');
 const dataj = fs.readFileSync("./database.json");
 const parseData = JSON.parse(dataj);
 const mysql = require('mysql');
+const multer = require("multer");
 
 const connection = mysql.createConnection({
     host: parseData.host,
@@ -87,12 +88,31 @@ app.get('/promotion', async (req, res)=>{
 })
 
 
+const storage = multer.diskStorage({
+    destination: "./imgreg",
+    filename: function(req, file, cb){
+        cb(null, file.originalname);
+    }
+})
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 100000000 }
+});
+app.post("/imgreg", upload.single("imgsrc"), function(req, res, next){
+    res.send({
+        imgsrc: 'imgreg/' + req.file.filename
+    })
+    console.log(req.file.filename);
+})
+app.use("/imgreg",express.static("imgreg"))
+
+
 // 프로모션페이지 업로드
 app.post('/postreg', async(req,res)=>{
-    const {title, body, imgsrc1, period} = req.body;
+    const {title, body, imgsrc, period} = req.body;
     connection.query(
-        "insert into promotion(`title`, `body`, `imgsrc1`, `period`) values(?,?,?,?)",
-        [title, body, imgsrc1, period],
+        "insert into promotion(`title`, `body`, `imgsrc`, `period`) values(?,?,?,?)",
+        [title, body, imgsrc, period],
         (err,result, fields)=>{
             console.log(result);
             console.log(err);
@@ -150,6 +170,6 @@ app.post('/reviewreg', async(req,res)=>{
 
 //세팅한 app을 실행시킨다.
 app.listen(port, () => {
-    console.log('그랩의 쇼핑몰 서버가 돌아가고 있습니다.');
+    console.log('서버가 돌아가고 있습니다.');
 });
 
