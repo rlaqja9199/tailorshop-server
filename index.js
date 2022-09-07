@@ -102,15 +102,14 @@ app.post('/postreg', async(req,res)=>{
 })
 
 //프로모션페이지 삭제
-app.post('/postdel', async(req,res)=>{
-    const {postId} = req.body;
+app.delete('/postdel', async(req,res)=>{
+    const { postId } = req.body;
+    console.log(req.body)
     connection.query(
-        `delete from promotion where title = ${postId}`,
+        `delete from promotion where id = ${postId}`,
         (err,result, fields)=>{
             console.log(`게시글 ${postId}번이 삭제되었습니다.`)
             console.log(result);
-            console.log(err);
-            console.log(id)
             res.send("게시글이 삭제되었습니다.")
         }
     )
