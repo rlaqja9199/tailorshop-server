@@ -88,6 +88,7 @@ app.get('/promotion', async (req, res)=>{
 })
 
 
+//이미지 멀터
 const storage = multer.diskStorage({
     destination: "./imgreg",
     filename: function(req, file, cb){
@@ -123,7 +124,7 @@ app.post('/postreg', async(req,res)=>{
 
 //프로모션페이지 삭제
 app.delete('/postdel', async(req,res)=>{
-    const { postId } = req.body;
+    const {postId}  = req.body;
     console.log(req.body)
     connection.query(
         `delete from promotion where id = ${postId}`,
@@ -150,6 +151,8 @@ app.get('/review', async (req, res)=>{
         }
     )
 })
+
+//리뷰페이지 등록
 app.post('/reviewreg', async(req,res)=>{
     const {imgsrc, title, body} = req.body;
     connection.query(
@@ -159,6 +162,20 @@ app.post('/reviewreg', async(req,res)=>{
             console.log(result);
             console.log(err);
             res.send("글이 등록되었습니다.");
+        }
+    )
+})
+
+//리뷰페이지 삭제
+app.delete('/reviewdel', async(req,res)=>{
+    const {postId}  = req.body;
+    console.log(req.body)
+    connection.query(
+        `delete from review where id = ${postId}`,
+        (err,result, fields)=>{
+            console.log(`게시글 ${postId}번이 삭제되었습니다.`)
+            console.log(result);
+            res.send("게시글이 삭제되었습니다.")
         }
     )
 })
