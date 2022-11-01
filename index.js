@@ -48,23 +48,43 @@ app.post("/signup",async (req, res)=>{
 
 // 로그인 하기
 app.post('/login', async (req, res)=>{
-    const {username,userpass}  = req.body; 
+    const {username,password}  = req.body; 
     console.log(req.body);
+    console.log(password);
     connection.query(
         `select * from user where username = '${username}'`,
         (err, rows, fields)=>{
-            console.log(rows)
+            console.log(rows[0])
             if(rows != undefined){
                 if(rows[0] == undefined){
                     res.send(null)
                 }else{
-                    bcrypt.compare(userpass, rows[0].userpass,function(err,login_flag){
+                    // const hashPassword = await bcrypt.compare(userpass,rows[0].userpass)
+                    // if(hashPassword){
+                    //     res.send(rows[0])
+                    //     console.log("이거");
+                    // }else{
+                    //     res.send(null)
+                    //     console.log("저거");
+                    // }
+
+                    // const hashPassword = bcrypt.compare(userpass, rows[0].userpass);
+                    // if(hashPassword){
+                    //         res.send(rows[0])
+                    //         console.log("이거");
+                    // }else{
+                    //     res.send(null)
+                    //     console.log("저거");
+                    // }
+
+                    bcrypt.compare(password, rows[0].password,(err,login_flag)=>{
+                        console.log(login_flag);
                         if(login_flag == true){
                             res.send(rows[0])
-                            console.log("이거");
+                            console.log(username+'님이 로그인 되었습니다.');
                         }else {
                             res.send(null)
-                            console.log("저거");
+                            console.log(username+'로그인을 실패하였습니다.');
                         }
                     })
                 }
@@ -74,6 +94,8 @@ app.post('/login', async (req, res)=>{
         }
     )
 })
+
+
 
 //프로모션 페이지
 
