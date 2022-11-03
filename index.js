@@ -65,7 +65,7 @@ app.post('/login', async (req, res)=>{
                     //     console.log("이거");
                     // }else{
                     //     res.send(null)
-                    //     console.log("저거");
+                    //     console.log("저거"); 
                     // }
 
                     // const hashPassword = bcrypt.compare(userpass, rows[0].userpass);
@@ -176,10 +176,10 @@ app.get('/review', async (req, res)=>{
 
 //리뷰페이지 등록
 app.post('/reviewreg', async(req,res)=>{
-    const {imgsrc, title, body} = req.body;
+    const {imgsrc, title, body, username} = req.body;
     connection.query(
-        "insert into review(`imgsrc`, `title`, `body`) values(?,?,?)",
-        [imgsrc, title, body],
+        "insert into review(`imgsrc`, `title`, `body`, `username`) values(?,?,?,?)",
+        [imgsrc, title, body, username],
         (err,result, fields)=>{
             console.log(result);
             console.log(err);
